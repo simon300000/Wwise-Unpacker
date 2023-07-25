@@ -15,20 +15,26 @@ rem ================= Methods
   mkdir dest_raw > nul 2>&1
   mkdir dest_wav > nul 2>&1
   
-  echo ---- Running 'quickbms': Extract raw files
-  for %%a in ("Game_Files\*.pck") do (Tools\quickbms.exe -q -k Tools\wwise_pck_extractor.bms "%%a" "dest_raw")
-  echo.
-  
-  echo ---- Running 'bnkextr'
-  for %%b in ("Game_Files\*.bnk") do (
-    Tools\bnkextr.exe "%%b" > nul
-    ren *.wav *.wem
-    move *.wem "dest_raw"
+  echo ---- Running 'quickbms' for PCK: Extract raw files to "dest_raw"
+  for %%a in ("Game_Files\*.pck") do (
+    Tools\quickbms.exe -q -k Tools\wwise_pck_extractor.bms "%%a" "dest_raw"
   )
   echo.
   
-  echo ---- Running 'vgmstream-cli': Convert to wav
-  for /r "dest_raw" %%c in ("*.wem") do (Tools\vgmstream-cli.exe -o "dest_wav\%%~nc.wav" "%%c" > nul)
+  echo ---- Running 'bnkextr' for BNK: Extract raw files to "dest_raw"
+  for %%b in ("Game_Files\*.bnk") do (
+    cd dest_raw
+    ..\Tools\bnkextr.exe "..\%%b" > nul
+    ren *.wav *.wem
+    cd ..
+  )
+  echo.
+  
+  echo ---- Running 'vgmstream-cli': Convert Wwise to wav in "dest_wav"
+  for /r "dest_raw" %%c in ("*.wem") do (
+    echo "%%c => wav"
+    Tools\vgmstream-cli.exe -o "dest_wav\%%~nc.wav" "%%c" > nul
+  )
   echo.
 goto:eof
 
