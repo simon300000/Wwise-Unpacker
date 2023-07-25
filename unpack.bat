@@ -1,7 +1,7 @@
 @echo off
 
 set TYPE=%1
-echo === Wwise_Unpacker v1.3 ===
+echo === Wwise_Unpacker v1.4 ===
 echo.
 echo == Unpacking to '%TYPE%'
 echo.
