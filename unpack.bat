@@ -71,4 +71,3 @@ echo -------------------------------------------------------------
 echo == Unpack finished! Files should be in the 'dest_%TYPE%' folder
 echo -------------------------------------------------------------
 
-pause
